@@ -42,7 +42,26 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $rules = [
+            'title' => ['required', 'max:255'],
+            'description' => ['required', 'max:1000'],
+            'price' => ['required', 'min:1'],
+            'stock' => ['required', 'min:0'],
+            'status' => ['required', 'in:available, unavailable'],
+        ];
+
+        request()->validate($rules);
+
+        if (request()->status == 'available' && request()->stock == 0){
+            session()->flash('error', 'If available must have stock');
+
+            return redirect()->back();
+        }
         $products = Product::create(request()->all());
+
+//        return redirect()->back();
+//        return redirect()->action('MainController@index');
+        return redirect()->route('products.index');
     }
 
     /**
@@ -85,6 +104,9 @@ class ProductController extends Controller
     {
        $product = Product::findOrFail($product);
        $product->update(request()->all());
+
+        return redirect()->route('products.index');
+
     }
 
     /**
@@ -97,6 +119,8 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($product);
         $product->delete();
-        return $product;
+
+        return redirect()->route('products.index');
+
     }
 }
