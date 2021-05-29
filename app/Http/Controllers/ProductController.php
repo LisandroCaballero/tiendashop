@@ -53,15 +53,22 @@ class ProductController extends Controller
         request()->validate($rules);
 
         if (request()->status == 'available' && request()->stock == 0){
-            session()->flash('error', 'If available must have stock');
 
-            return redirect()->back();
+
+            return redirect()
+                ->back()
+                ->withInput(request()->all())
+                ->withErrors('If available must have stock');
         }
         $products = Product::create(request()->all());
 
 //        return redirect()->back();
 //        return redirect()->action('MainController@index');
-        return redirect()->route('products.index');
+
+        return redirect()
+            ->route('products.index')
+            ->withSuccess("The new product with id {$product->id} was created");
+
     }
 
     /**
@@ -115,7 +122,9 @@ class ProductController extends Controller
        $product = Product::findOrFail($product);
        $product->update(request()->all());
 
-        return redirect()->route('products.index');
+        return redirect()
+            ->route('products.index')
+            ->withSuccess("The product with id {$product->id} was edited successfully");
 
     }
 
@@ -130,7 +139,9 @@ class ProductController extends Controller
         $product = Product::findOrFail($product);
         $product->delete();
 
-        return redirect()->route('products.index');
+        return redirect()
+            ->route('products.index')
+            ->withSuccess("The product with id {$product->id} was deleted successfully");
 
     }
 }
