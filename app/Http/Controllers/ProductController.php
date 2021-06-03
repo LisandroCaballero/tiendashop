@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -78,10 +83,8 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function show($product)
+    public function show(Product $product)
     {
-        $product = Product::findOrFail($product);
-
         return view('products.show')->with([
             'product' => $product,
         ]);
@@ -93,10 +96,10 @@ class ProductController extends Controller
      * @param $product
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function edit($product)
+    public function edit(Product $product)
     {
         return view('products.edit')->with([
-            'product' => Product::findOrFail($product),
+            'product' =>($product),
         ]);
     }
 
@@ -107,7 +110,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($product)
+    public function update(Product $product)
     {
         $rules = [
             'title' => ['required', 'max:255'],
@@ -119,7 +122,7 @@ class ProductController extends Controller
 
         request()->validate($rules);
 
-       $product = Product::findOrFail($product);
+       $product = ($product);
        $product->update(request()->all());
 
         return redirect()
@@ -127,16 +130,15 @@ class ProductController extends Controller
             ->withSuccess("The product with id {$product->id} was edited successfully");
 
     }
-
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+
+     * @param $product
+     * @return mixed
      */
-    public function destroy($id)
+
+    public function destroy(Product $product)
     {
-        $product = Product::findOrFail($product);
         $product->delete();
 
         return redirect()
