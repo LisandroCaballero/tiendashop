@@ -48,18 +48,11 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        if (request()->status == 'available' && request()->stock == 0){
-            return redirect()
-                ->back()
-                ->withInput(request()->all())
-                ->withErrors('If available must have stock');
-        }
-        $products = Product::create(request()->all());
+        $products = Product::create($request->validated());
 
         return redirect()
             ->route('products.index')
-            ->withSuccess("The new product with id {$product->id} was created");
-
+            ->withSuccess("The new product with id {$products->id} was created");
     }
 
     /**
@@ -99,7 +92,7 @@ class ProductController extends Controller
     public function update(ProductRequest $request, Product $product)
     {
        $product = ($product);
-       $product->update(request()->all());
+       $product->update($request->all());
 
         return redirect()
             ->route('products.index')
