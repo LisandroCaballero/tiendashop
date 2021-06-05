@@ -8,4 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Payment extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+      'amount',
+      'payed_at',
+    ];
+
+
+    /**
+     * @var string[]
+     */
+    protected $dates = [
+        'payet_at',
+    ];
 }
