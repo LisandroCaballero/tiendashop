@@ -19,6 +19,6 @@ class Payment extends Model
      * @var string[]
      */
     protected $dates = [
-        'payet_at',
+        'payed_at',
     ];
 }
