@@ -41,8 +41,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
+    /**
+     * @var string[]
+     */
     protected $dates = [
         'admin_since',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders()
+    {
+      return $this->hasMany(Order::class, 'customer_id');
+    }
 }
