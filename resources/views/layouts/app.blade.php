@@ -40,6 +40,11 @@
                             Products
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('carts.index') }}">
+                            Cart
+                        </a>
+                    </li>
 
                 </ul>
 

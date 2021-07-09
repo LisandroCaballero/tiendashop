@@ -15,4 +15,12 @@ class Image extends Model
     protected $fillable = [
        'path',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function imageable()
+    {
+        return $this->morphTo();
+    }
 }

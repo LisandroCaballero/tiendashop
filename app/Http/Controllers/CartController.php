@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Services\CartServices;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    public $cartService;
+    public function __construct(CartServices $cartService )
+    {
+        $this->cartService = $cartService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +20,10 @@ class CartController extends Controller
      */
     public function index()
     {
-        //
+
+        return view('carts.index')->with([
+            'cart' => $this->cartService->getFromCookieOrCreate(),
+        ]);
     }
 
     /**
