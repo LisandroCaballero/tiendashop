@@ -5,10 +5,22 @@
         <h5 class="card-title">{{$product->title}}</h5>
         <p class="card-text">{{$product->description}}</p>
         <p class="card-text"><strong>{{$product->stock}} left</strong></p>
-        <form action="{{route('products.carts.store', ['product' => $product->id])}}" class="d-inline" method="post">
-            @csrf
-            <button type="submit" class="btn btn-success"> Add To Car</button>
-        </form>
+        @if(isset($cart))
+            <p class="card-text">{{ $product->pivot->quantity }} in your cart <strong>(${{ $product->total }})</strong></p>
+
+            <form action="{{route('products.carts.destroy', ['cart' =>  $cart->id, 'product' => $product->id])}}"
+                  class="d-inline" method="post">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-warning"> Remove From Cart</button>
+            </form>
+        @else
+            <form action="{{route('products.carts.store', ['product' => $product->id])}}" class="d-inline"
+                  method="post">
+                @csrf
+                <button type="submit" class="btn btn-success"> Add To Car</button>
+            </form>
+        @endif
     </div>
 </div>
 

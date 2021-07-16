@@ -21,8 +21,8 @@ class CartController extends Controller
     public function index()
     {
 
-        return view('carts.index')->with([
-            'cart' => $this->cartService->getFromCookieOrCreate(),
+        return view('cart.index')->with([
+            'cart' => $this->cartService->getFromCookie(),
         ]);
     }
 
@@ -90,5 +90,13 @@ class CartController extends Controller
     public function destroy(Cart $cart)
     {
         //
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTotalAttribute()
+    {
+        return $this->products->pluck('total')->sum();
     }
 }
